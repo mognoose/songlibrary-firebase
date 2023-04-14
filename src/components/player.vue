@@ -341,7 +341,7 @@ input[type="range"]:focus::-moz-range-thumb {
   .audio {
     margin-bottom: 10px;
     background-color: rgba(0,0,0,0.0);
-    background-image: url('~@/assets/winamp.jpg');
+    // background-image: url('~@/assets/winamp.jpg');
     background-position: center;
     background-position-y: -2px;
     background-repeat: no-repeat;
@@ -446,7 +446,7 @@ input[type="range"]:focus::-moz-range-thumb {
       margin-top: -.25rem;
       width: 60px;
       border-radius: 0;
-      background-image: url('~@/assets/winamp.jpg');
+      // background-image: url('~@/assets/winamp.jpg');
       background-repeat: no-repeat;
       background-position-x: -55px;
       background-position-y: -150px;
@@ -485,7 +485,7 @@ input[type="range"]:focus::-moz-range-thumb {
       margin-top: -.25rem;
       width: 60px;
       border-radius: 0;
-      background-image: url('~@/assets/winamp.jpg');
+      // background-image: url('~@/assets/winamp.jpg');
       background-repeat: no-repeat;
       background-position-x: -55px;
       background-position-y: -150px;

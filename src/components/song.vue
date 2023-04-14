@@ -38,7 +38,7 @@
           </button>
         </div>
 
-        <!-- <DemoFiles :files="filesReversed" :tags="tags" /> -->
+        <DemoFiles :files="song.recordings" :tags="tags" />
       </div>
 
       <div class="btn lyrics" v-else-if="$route.query.section === 'chords'">
@@ -100,7 +100,7 @@
       <div class="message" v-if="loading"><Spinner /> Loading song...</div>
       <div class="message" v-else>Song not found</div>
     </div>
-    <pre>{{ song }}</pre>
+    <!-- <pre>{{ song }}</pre> -->
   </div>
 </template>
 
@@ -145,7 +145,12 @@ export default {
         { name: "riff", selected: false },
         { name: "other", selected: false },
       ],
-      tagCount: {},
+      tagCount: {
+        demo: 0,
+        rehersalrec: 0,
+        riff: 0,
+        other: 0,
+      },
       song: {},
     };
   },
@@ -156,7 +161,7 @@ export default {
     ...mapGetters(["loading"]),
 
     filesReversed() {
-      return this.song.fields.demo.reverse();
+      return this.song.recordings.reverse();
     },
   },
   methods: {
@@ -166,6 +171,20 @@ export default {
       this.setLoading(true);
       const [song] = await useLoadSongs();
       this.song = song;
+
+      this.song.recordings.forEach(rec => {
+        if(rec.tag === 'demo') this.tagCount.demo = this.tagCount.demo+1;
+        if(rec.tag === 'rehersalrec') this.tagCount.rehersalrec = this.tagCount.rehersalrec+1;
+        if(rec.tag === 'riff') this.tagCount.riff = this.tagCount.riff+1;
+        if(rec.tag === 'other') this.tagCount.other = this.tagCount.other+1;
+      })
+
+      let showTag = 0;
+        if (this.tagCount.demo === 0) showTag++;
+        if (this.tagCount.riff === 0 && showTag === 1) showTag++;
+        if (this.tagCount.rehersalrec === 0 && showTag === 2) showTag++;
+
+      this.tags[showTag].selected = true;
       this.setLoading(false);
     },
     richTextFormat(text) {

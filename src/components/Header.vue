@@ -1,13 +1,16 @@
 <template>
   <div class="header">
     <h1>Songlibrary</h1>
+    <player />
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
+import player from './player.vue';
 
 export default {
+  components: { player },
   name: "Header",
   props: {
     small: {
