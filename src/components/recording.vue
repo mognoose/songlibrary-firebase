@@ -1,20 +1,23 @@
 <template>
   <div>
-    <div v-if="rec.fields">
-      <div style="max-width: 1000px;margin: 0 auto; display: flex; justify-content: flex-start; align-items: center">
-        <div style="width: 20%">
-          <router-link :to="'/'+$route.params.song+'?section=recordings'" class="btn round"><svg-icon :fa-icon="faArrowLeft" size="34"/></router-link>
+    <div v-if="rec.slug">
+      <div class="heading">
+        <div>
+          <router-link
+            :to="`/${$route.params.song}?section=recordings`"
+            class="btn round"
+            ><svg-icon :fa-icon="faArrowLeft" size="34"
+          /></router-link>
         </div>
-        
-        <div style="width: 60%">&nbsp;</div>
-        <div style="width: 20%">
+        <h1>{{ rec?.name }}</h1>
+        <div>
           <ShareNetwork
             class="btn round"
             style="margin-left: auto;"
             network="whatsapp"
             :url="urlShare()"
-            :title="rec.fields?.title"
-            :description="$route.query.section || 'Songlibrary'"
+            :title="rec.name"
+            :description="$route.query.section || 'Recording'"
           >
             <svg-icon :fa-icon="faWhatsapp" size="34" />
           </ShareNetwork>
@@ -31,14 +34,14 @@
 </template>
 
 <script>
-import { createClient } from 'contentful';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import Demos from '../components/demos.vue';
 import DemoFiles from '../components/files.vue';
 import Spinner from '../components/Spinner'
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { faArrowLeft, faMusic, faHeadphones, faMicrophone, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { useLoadSongBySlug } from "@/firebase";
+
 export default {
   components: {
     DemoFiles,
@@ -63,21 +66,16 @@ export default {
     ...mapGetters(['loading', 'playerSource']),
   },
   methods: {
-    ...mapActions(['setLoading']),
-    ...mapMutations(['setPlayerSource']),
+    ...mapMutations(['setPlayerSource', 'setLoading']),
 
     async fetchRecording() {
       this.setLoading(true);
-      const client = createClient({
-        space: process.env.VUE_APP_CTF_SPACE_ID,
-        accessToken: process.env.VUE_APP_CTF_CDA_ACCESS_TOKEN,
-      });
-      await client.getAsset(this.$route.params.rec)
-        .then(rec => {
-          this.rec = rec;
-          this.setLoading(false);
+      const res = await useLoadSongBySlug(this.$route.params.song);
+      const [song] = res;
+      [this.rec] = song.recordings.map(rec => {
+          if(rec.slug === this.$route.params.file) return rec;
         })
-        .catch('ERROR '+console.error);
+      this.setLoading(false);
     },
     richTextFormat(text) {
       return documentToHtmlString(text);
@@ -106,6 +104,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.heading {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 video {
   padding: 0px;
   margin: 0px;

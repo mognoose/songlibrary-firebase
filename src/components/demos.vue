@@ -1,6 +1,6 @@
 <template>
   <div class="demo" v-if="hasTag(file, tag)">
-    <router-link :to="$route.params.song+'/'+file?.id">
+    <router-link :to="`${$route.params.song}/${file?.slug}`">
       <h2>
         {{ file?.title }}
       </h2>
@@ -49,7 +49,7 @@ export default {
       this.setPlayerSource(
         {
           title: this.file.title,
-          url: process.env.VUE_APP_API_BASE_URL+'files/stream/'+this.file.file,
+          url: process.env.VUE_APP_API_BASE_URL+'files/download/'+this.file.file,
           contentType: this.file.type,
           status: status,
         }

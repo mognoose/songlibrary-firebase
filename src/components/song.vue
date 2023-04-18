@@ -100,7 +100,6 @@
       <div class="message" v-if="loading"><Spinner /> Loading song...</div>
       <div class="message" v-else>Song not found</div>
     </div>
-    <!-- <pre>{{ song }}</pre> -->
   </div>
 </template>
 

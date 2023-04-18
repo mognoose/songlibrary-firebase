@@ -31,11 +31,11 @@ export const useLoadSongBySlug = async slug => {
         .catch(error => {
             console.log("Error getting songs: ", error);
         });
-
+    
     return res;
 }
 
 export const getSongById = async id => {
-    const song = await songsDB.doc(id).get();
+    const song = await songDB.doc(id).get();
     return song.exists ? song.data() : null;
 }
