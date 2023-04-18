@@ -118,7 +118,7 @@ import {
 import {
   faWhatsapp
 } from "@fortawesome/free-brands-svg-icons";
-import { useLoadSongs } from "@/firebase";
+import { useLoadSongBySlug } from "@/firebase";
 
 export default {
   components: {
@@ -168,7 +168,7 @@ export default {
 
     async fetchSong() {
       this.setLoading(true);
-      const [song] = await useLoadSongs();
+      const [song] = await useLoadSongBySlug(this.$route.params.song);
       this.song = song;
 
       this.song.recordings.forEach(rec => {
