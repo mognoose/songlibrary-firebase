@@ -43,6 +43,17 @@ nav {
   }
 }
 
+.card {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-top: 1em;
+  border: 1px solid #333;
+  display: block;
+  padding: 0px;
+  border-radius: 1em;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+  transition: .35s;
+}
 .files,
 .lyrics,
 .sectionButton,
@@ -158,5 +169,34 @@ tr:hover {
 
 .round {
   margin: 1rem;
+}
+
+input,
+textarea {
+  background-color: #121212;
+  color: #cecece;
+  padding: 10px 35px 10px 15px;
+  border: 1px solid #666;
+  border-radius: 100px;
+  outline: none;
+  border-style: hidden; /* hide standard table (collapsed) border */
+  box-shadow: 0 0 0 1px #666; /* this draws the table border  */
+}
+
+textarea {
+  border-radius: 20px;
+  height: 10rem;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 3fr 7fr;
+  padding: 1rem;
+  gap: 1rem;
+  justify-content: center;
+  > * {
+    align-self: center;
+    text-align: left;
+  }
 }
 </style>

@@ -39,3 +39,8 @@ export const getSongById = async id => {
     const song = await songDB.doc(id).get();
     return song.exists ? song.data() : null;
 }
+
+export const addSong = async data => {
+    const res = await songDB.add(data);
+    return res;
+}

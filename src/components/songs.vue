@@ -9,6 +9,7 @@
         v-model="search"
         @input="fetchSongs"
       />
+      <button @click="onAddSong()"><svg-icon :fa-icon="faAdd" size="18" /></button>
     </div>
     <div v-if="loading"><Spinner/> Loading songs...</div>
     <table v-else>
@@ -23,12 +24,16 @@
 import { mapGetters, mapMutations } from 'vuex';
 import Spinner from '../components/Spinner'
 import { useLoadSongs } from "@/firebase";
-
+import {faAdd} from "@fortawesome/free-solid-svg-icons";
 export default {
   components: {
     Spinner,
   },
-
+  setup() {
+    return {
+      faAdd
+    };
+  },
   data() {
     return {
       songs: [],
@@ -54,6 +59,9 @@ export default {
     openSong(slug) {
       this.$router.push(slug);
     },
+    onAddSong(){
+      this.$router.push('/addSong');
+    }
   },
 };
 </script>
@@ -69,6 +77,22 @@ export default {
   margin-bottom: 1em;
   border-style: hidden; /* hide standard table (collapsed) border */
   box-shadow: 0 0 0 1px #666; /* this draws the table border  */
+}
+button {
+  cursor: pointer;
+  background-color: #212121;
+  color: #cecece;
+  border: 1px solid #666;
+  border-radius: 100px;
+  margin: 0 1em;
+  padding: .5em;
+  svg {
+    margin-top: 2px;
+    margin-bottom: -2px;
+  }
+}
+button:hover {
+  background-color: #333;
 }
 td {
   cursor: pointer;

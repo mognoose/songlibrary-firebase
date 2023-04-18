@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import AddSongView from '../views/AddSongView.vue'
 import SongView from '../views/SongView.vue'
 import RecordingView from '../views/RecordingView.vue'
 
@@ -8,6 +9,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/addsong',
+    name: 'addSong',
+    component: AddSongView
   },
   {
     path: '/:song',
