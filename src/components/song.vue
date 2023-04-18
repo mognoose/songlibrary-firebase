@@ -1,105 +1,80 @@
 <template>
-  <div>
-    <div v-if="song">
-      <div class="heading">
-        <div>
-          <router-link
-            :to="$route.query.section ? $route.path : '/'"
-            class="btn round"
-            ><svg-icon :fa-icon="faArrowLeft" size="34"
-          /></router-link>
-        </div>
-        <h1>{{ song.name }}</h1>
-        <div>
-          <ShareNetwork
-            class="btn round"
-            style="margin-left: auto;"
-            network="whatsapp"
-            :url="urlShare()"
-            :title="song.name"
-            :description="$route.query.section || 'Songlibrary'"
-          >
-            <svg-icon :fa-icon="faWhatsapp" size="34" />
-          </ShareNetwork>
-        </div>
-      </div>
-
-      <div v-if="$route.query.section === 'recordings'">
-        <h2><svg-icon :fa-icon="faHeadphones" /> Recordings</h2>
-        <div class="tags">
-          <button
-            class="tag"
-            @click="toggleTag(tag.name)"
-            v-for="tag in tags"
-            :key="tag.name"
-            :class="tag.selected ? 'selectedTag' : 'unselectedTag'"
-          >
-             {{ tag.name }} <span class="badge">{{tagCount[tag.name]}}</span>
-          </button>
-        </div>
-
-        <DemoFiles :files="song.recordings" :tags="tags" />
-      </div>
-
-      <div class="btn lyrics" v-else-if="$route.query.section === 'chords'">
-        <h2><svg-icon :fa-icon="faMusic" /> Chords and Structure</h2>
-        <div
-          v-if="song.chords"
-          v-html="song.chords"
-          class="lyricsbody"
-        ></div>
-        <div v-else style="padding-bottom: 1em">No chords</div>
-      </div>
-
-      <div class="btn lyrics" v-else-if="$route.query.section === 'lyrics'">
-        <h2><svg-icon :fa-icon="faMicrophone" /> Lyrics</h2>
-        <div
-          v-if="song.lyrics"
-          v-html="song.lyrics"
-          class="lyricsbody"
-        ></div>
-        <div v-else style="padding-bottom: 1em">No lyrics</div>
-      </div>
-
-      <div v-else-if="$route.query.section === 'links'">
-        <h2><svg-icon :fa-icon="faLink" /> Links</h2>
-        <div
-          v-if="song.links"
-          class="lyricsbody"
+  <div v-if="song">
+    <Heading :name="song.name" />
+    <div v-if="$route.query.section === 'recordings'">
+      <h2><svg-icon :fa-icon="faHeadphones" /> Recordings</h2>
+      <div class="tags">
+        <button
+          class="tag"
+          @click="toggleTag(tag.name)"
+          v-for="tag in tags"
+          :key="tag.name"
+          :class="tag.selected ? 'selectedTag' : 'unselectedTag'"
         >
-          <table>
-            <tr v-for="link, i in song.links" :key="i">
-              <td><div><a :href="link.url" target="_Blank">{{ link.title }} - {{ link.url }}</a></div></td>
-            </tr>
-          </table>
-        </div>
-        <div v-else style="padding-bottom: 1em">No links</div>
+            {{ tag.name }} <span class="badge">{{tagCount[tag.name]}}</span>
+        </button>
       </div>
+      <DemoFiles :files="song.recordings" :tags="tags" />
+    </div>
 
-      <div v-else>
-        <div class="btn sectionButton" @click="openSection('recordings')">
-          <div class="icon"><svg-icon :fa-icon="faHeadphones" /></div>
-          <div class="heading"><h2>Recordings</h2></div>
-        </div>
-        <div class="btn sectionButton" @click="openSection('chords')">
-          <div class="icon"><svg-icon :fa-icon="faMusic" /></div>
-          <div class="heading"><h2>Chords</h2></div>
-        </div>
-        <div class="btn sectionButton" @click="openSection('lyrics')">
-          <div class="icon"><svg-icon :fa-icon="faMicrophone" /></div>
-          <div class="heading"><h2>Lyrics</h2></div>
-        </div>
-        <div class="btn sectionButton" @click="openSection('links')">
-          <div class="icon"><svg-icon :fa-icon="faLink" /></div>
-          <div class="heading"><h2>Links</h2></div>
-        </div>
+    <div class="btn lyrics" v-else-if="$route.query.section === 'chords'">
+      <h2><svg-icon :fa-icon="faMusic" /> Chords and Structure</h2>
+      <div
+        v-if="song.chords"
+        v-html="song.chords"
+        class="lyricsbody"
+      ></div>
+      <div v-else style="padding-bottom: 1em">No chords</div>
+    </div>
+
+    <div class="btn lyrics" v-else-if="$route.query.section === 'lyrics'">
+      <h2><svg-icon :fa-icon="faMicrophone" /> Lyrics</h2>
+      <div
+        v-if="song.lyrics"
+        v-html="song.lyrics"
+        class="lyricsbody"
+      ></div>
+      <div v-else style="padding-bottom: 1em">No lyrics</div>
+    </div>
+
+    <div v-else-if="$route.query.section === 'links'">
+      <h2><svg-icon :fa-icon="faLink" /> Links</h2>
+      <div
+        v-if="song.links"
+        class="lyricsbody"
+      >
+        <table>
+          <tr v-for="link, i in song.links" :key="i">
+            <td><div><a :href="link.url" target="_Blank">{{ link.title }} - {{ link.url }}</a></div></td>
+          </tr>
+        </table>
       </div>
-      <div style="padding-bottom: 1em"></div>
+      <div v-else style="padding-bottom: 1em">No links</div>
     </div>
+
     <div v-else>
-      <div class="message" v-if="loading"><Spinner /> Loading song...</div>
-      <div class="message" v-else>Song not found</div>
+      <div class="btn sectionButton" @click="openSection('recordings')">
+        <div class="icon"><svg-icon :fa-icon="faHeadphones" /></div>
+        <div class="heading"><h2>Recordings</h2></div>
+      </div>
+      <div class="btn sectionButton" @click="openSection('chords')">
+        <div class="icon"><svg-icon :fa-icon="faMusic" /></div>
+        <div class="heading"><h2>Chords</h2></div>
+      </div>
+      <div class="btn sectionButton" @click="openSection('lyrics')">
+        <div class="icon"><svg-icon :fa-icon="faMicrophone" /></div>
+        <div class="heading"><h2>Lyrics</h2></div>
+      </div>
+      <div class="btn sectionButton" @click="openSection('links')">
+        <div class="icon"><svg-icon :fa-icon="faLink" /></div>
+        <div class="heading"><h2>Links</h2></div>
+      </div>
     </div>
+    <div style="padding-bottom: 1em"></div>
+  </div>
+  <div v-else>
+    <div class="message" v-if="loading"><Spinner /> Loading song...</div>
+    <div class="message" v-else>Song not found</div>
   </div>
 </template>
 
@@ -107,6 +82,7 @@
 import Demos from "../components/demos.vue";
 import DemoFiles from "../components/files.vue";
 import Spinner from "../components/Spinner";
+import Heading from "../components/heading.vue";
 import { mapGetters, mapMutations } from "vuex";
 import {
   faArrowLeft,
@@ -125,6 +101,7 @@ export default {
     DemoFiles,
     Demos,
     Spinner,
+    Heading,
   },
   setup() {
     return {

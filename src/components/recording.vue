@@ -1,28 +1,7 @@
 <template>
   <div>
     <div v-if="rec.slug">
-      <div class="heading">
-        <div>
-          <router-link
-            :to="`/${$route.params.song}?section=recordings`"
-            class="btn round"
-            ><svg-icon :fa-icon="faArrowLeft" size="34"
-          /></router-link>
-        </div>
-        <h1>{{ rec?.name }}</h1>
-        <div>
-          <ShareNetwork
-            class="btn round"
-            style="margin-left: auto;"
-            network="whatsapp"
-            :url="urlShare()"
-            :title="rec.name"
-            :description="$route.query.section || 'Recording'"
-          >
-            <svg-icon :fa-icon="faWhatsapp" size="34" />
-          </ShareNetwork>
-        </div>
-      </div>
+      <Heading :name="rec?.name" />
       <DemoFiles :files="[rec]" :tags="[{ name: 'demo', selected: true },{ name: 'rehersalrec', selected: true },{ name: 'riff', selected: true },{ name: 'other', selected: true }]" />
     </div>
 
@@ -37,6 +16,7 @@
 import Demos from '../components/demos.vue';
 import DemoFiles from '../components/files.vue';
 import Spinner from '../components/Spinner'
+import Heading from '../components/heading.vue';
 import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { faArrowLeft, faMusic, faHeadphones, faMicrophone, faPlay, faPause } from "@fortawesome/free-solid-svg-icons";
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
@@ -47,6 +27,7 @@ export default {
     DemoFiles,
     Demos,
     Spinner,
+    Heading,
   },
   setup() {
 		return {
